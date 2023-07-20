@@ -1,0 +1,56 @@
+server:
+  max-http-header-size: 18KB  
+  compression:
+    enabled: true
+    mime-types:
+    - application/json
+    - application/vnd.api+json  
+  http2:
+    enabled: ${APP_HTTP2_ENABLED:true}
+  tomcat:
+    connection-timeout: 60s  
+    threads:
+      max: 200
+  port: ${APP_SERVER_PORT:5555}
+  servlet:
+#    contextPath: /
+    jsp:
+      init-parameters:
+        listings: false
+    autoDeploy: false       
+spring:
+  jpa:
+    properties:
+      hibernate:
+        generate_statistics: true
+        session:
+          events:
+            log:
+              LOG_QUERIES_SLOWER_THAN_MS: 1
+        '[default_batch_fetch_size]': 100
+        # The SQL dialect makes Hibernate generate better SQL for the chosen database
+        dialect: 'org.hibernate.dialect.SQLServer2012Dialect'
+#        dialect: 'org.hibernate.dialect.SQLServer2012Dialect'
+        '[use_scrollable_resultset]': true
+    show-sql: false # true
+    hibernate:
+      naming:
+        physical-strategy: 'org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl'
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#    url: jdbc:sqlserver://${APP_MSSQL_HOST:mpppilot-qa-restore.c9nlk0qnspjg.ap-southeast-1.rds.amazonaws.com:1433};databaseName=${APP_MSSQL_DBNAME:mpppilot};trustServerCertificate=true
+#    username: admin
+#    password: 9`yBB5zuh{3>X1Ay
+    url: jdbc:sqlserver://${APP_MSSQL_HOST:localhost};databaseName=${APP_MSSQL_DBNAME:Book};trustServerCertificate=true
+    username: ${APP_MSSQL_USERNAME:sa}
+    password: ${APP_MSSQL_PASSWORD:password}
+#    url: jdbc:sqlserver://${APP_MSSQL_HOST:mppfsd-prod.ckjrawnmisrl.ap-southeast-1.rds.amazonaws.com:1533};databaseName=${APP_MSSQL_DBNAME:mpppilot};trustServerCertificate=true
+#    username: ${APP_MSSQL_USERNAME:admin}
+#    password: ${APP_MSSQL_PASSWORD:I,ngyMF2f3~z<3Aq}
+#    platform: sqlserver
+#    url: # use h2
+  liquibase:
+    contexts: prod
+    enabled: false
+  application:
+    name: support      
